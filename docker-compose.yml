@@ -1,29 +1,35 @@
-version: '2'
+version: "3.2"
+
 services:
-  battle281003:
-    image: fake-backend:latest
-    ports:
-      - "80:3000"
-    links:
-      - db281003
-    volumes:
-      - ./static_files:/etc/backend/static
-    restart: always
-    environment:
-      - DATABASE_HOST=db281003
-      - DATABASE_PORT=3306
-      - DATABASE_USER=battleuser
-      - DATABASE_PASSWORD=battlepass
-      - DATABASE_NAME=battleboat
-  db281003:
+#Mysql Container
+  db1:
     image: mysql:5.7
-    environment:
-      - MYSQL_ROOT_PASSWORD=rootpwd281003
-      - MYSQL_DATABASE=battleboat
-      - MYSQL_USER=battleuser
-      - MYSQL_PASSWORD=battlepass
-    restart: always
+    container_name: db1
+    hostname: db1
     volumes:
-      - mysql_config:/var/lib/mysql
-volumes:
-  mysql_config:
+      - /var/lib/mysql:/var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: rootpwd1
+        MYSQL_DATABASE: battleboat
+        MYSQL_USER: battleuser
+        MYSQL_PASSWORD: battlepass
+    restart: always
+
+#Battle Container
+  battle1:
+    image: gazambey/fake-backend
+    container_name : battle1
+    hostname: battle1
+    ports:
+      - "8181:80"
+    volumes:
+      - /var/www/html/:/var/www/html
+    environment:
+        DATABASE_HOST: "db1"
+        DATABASE_PORT: "3306"
+        DATABASE_USER: "battleuser"
+        DATABASE_PASSWORD: "battlepass"
+        DATABASE_NAME: "battleboat"
+    depends_on:
+        - db1    
+    restart: always
