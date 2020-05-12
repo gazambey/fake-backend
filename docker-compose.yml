@@ -23,7 +23,7 @@ services:
     ports:
       - "80:3000"
     volumes:
-      - /var/www/html/:/var/www/html
+      - ./static_files:/etc/backend/static
     environment:
         DATABASE_HOST: "db1"
         DATABASE_PORT: "3306"
