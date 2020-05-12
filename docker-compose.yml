@@ -21,7 +21,7 @@ services:
     container_name : battle1
     hostname: battle1
     ports:
-      - "8181:80"
+      - "80:3000"
     volumes:
       - /var/www/html/:/var/www/html
     environment:
